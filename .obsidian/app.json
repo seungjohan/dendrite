@@ -1,0 +1,10 @@
+{
+  "alwaysUpdateLinks": true,
+  "promptDelete": true,
+  "newFileLocation": "root",
+  "vimMode": false,
+  "attachmentFolderPath": "resources/attachments",
+  "showLineNumber": false,
+  "tabSize": 3,
+  "propertiesInDocument": "visible"
+}

@@ -1,0 +1,5 @@
+{
+  "format": "YYYY-MM-DD",
+  "folder": "seungjohan/reflection/daily notes",
+  "template": "resources/templates/dailynote.template.md"
+}

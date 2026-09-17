@@ -1,0 +1,8 @@
+.DS_Store
+.obsidian/plugins/
+.obsidian/workspace.json
+.obsidian/workspaces.json
+.smart-env/
+.smtcmp_vector_db.tar.gz
+.smtcmp_json_db/
+.claude/
