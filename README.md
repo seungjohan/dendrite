@@ -6,7 +6,7 @@ category: system
 > [!IMPORTANT] Key Takeaway
 > **What this is:** A living log of everything I study, which grows connections between subjects so that all my learning becomes one connected experience.
 > **Why it exists:** The more we live, the more we have to study. It never ends, so it should add up.
-> **Start here:** [[index|Dendrite hub]] · [[AGENTS]] (how Claude works here) · [[LINKING]] (how notes connect)
+> **Start here:** [[index|Dendrite hub]] · [[AGENTS]] (how Claude works here) · [[LINKING]] (how notes connect) · [[Decision log]] (what's decided)
 
 # 🌿 Dendrite
 
@@ -70,10 +70,10 @@ This is the one full copy of the loop. index points here.
 
 1. **Log every session.** One row in [[Study log]]: what I studied today, note or not.
 2. **Ask why.** Write down what doesn't add up as a *why* question (not a *what* question), even if I can't answer it yet. Each one goes in [[Question log]]. That's where connections start.
-3. **Write a note when it's worth keeping.** One note per *thing worth keeping*, not per study session. Always use the `dendrite` template. Its 🕸 *Meets this note* footer shows other notes that share its context automatically.
+3. **Write a note when there's something to bond.** A takeaway worth finding again, or a *why* question. Facts alone get only the log row. Always use the `dendrite` template. Its 🕸 *Meets this note* footer shows other notes that share its context automatically.
 4. **Tag the context.** `era`, `people`, `place` (and `threads`) are links. Notes from different subjects that share one meet automatically.
 5. **Connect questions.** When a later study answers or touches an old question, record it in [[Connection log]].
-6. **Bond pass (weekly).** Ask Claude to check notes that haven't been bonded yet. Every bond needs a reason: *"connects because ___"*. Each pass is recorded in [[Bond log]].
+6. **Bond pass (weekly).** Ask Claude to check notes that haven't been bonded yet. Every bond needs a reason: *"connects because ___"*, and records who found it (me or the bond pass). Each pass is recorded in [[Bond log]].
 7. **Look back (monthly).** Which era, person or thread pulls in the most subjects? Which questions are still open? That's where my studies are secretly one story.
 
 ### The note template
@@ -102,28 +102,9 @@ dendrite/
 ├── AGENTS.md        ← rules for Claude
 ├── LINKING.md       ← the linking system
 ├── index.md         ← hub: all notes + where subjects meet
-├── logs/            ← Study log · Question log · Connection log · Bond log
+├── logs/            ← Study · Question · Connection · Bond · Decision logs
 ├── notes/           ← one note per thing worth keeping
 ├── concepts/        ← Kind-1 mechanisms (created only when 2+ notes share one)
 └── resources/templates/dendrite.md
 ```
 Era, people, place and thread pages (`[[1600s]]`, `[[Julius Caesar]]`) don't need to exist up front. An unresolved link still works as a meeting point in the graph. Create the page only once there's something to say about it.
-
----
-
-## 🧭 Decisions (so I don't re-argue them)
-
-| Date | Decision | Why |
-|---|---|---|
-| 2026-09-17 | **Obsidian first, not a product** | I don't know yet which way works best: connections that come to me, or me going looking. A few months of real logging will tell me. The real risk is whether I keep the habit, and Obsidian tests that almost for free. |
-| 2026-09-17 | **Build a product only when…** | …I've logged for months, had real "wow" connections, and can say what a tool did that plain Obsidian couldn't. |
-| 2026-09-17 | **Its own vault** | Moved out of curiosity-lab so study logs have their own space. |
-| 2026-09-17 | **Name: Dendrite** | Chosen over *Soma* (the cell body where signals combine; it names the result, and the name is taken by other brands) and *Neuron Web* (clear but generic). Dendrite names the *process*: gathering, branching, growing. Also considered: Quadrivium, Septem, Polymath Log, Common Root. |
-| 2026-09-17 | **One consistent template** | Whatever and however I study, the format stays the same, so notes can be compared and connected. |
-| 2026-09-17 | **Three study logs, not only notes** | Study log (what I studied), Question log (questions only), Connection log (which question connects to which study). Not every session deserves a note, but every session and every question should leave a trace. Borrowed the quick-line idea from my seungjohan logbook. |
-| 2026-09-17 | **Each vault holds one thing** | Dendrite = study and its bonds. seungjohan = daily activity and reference material. curiosity-lab = ideas and research. Link across vaults, don't copy. |
-
-## ❓ Open Questions
-- **Connections come to me, or I go looking?** Which one actually happens in practice? Watch for it.
-- **Which hidden threads matter most for studying?** Era and people are obvious. What else: technology, war, trade, religion, a shared problem?
-- **When does a note deserve to exist?** "Thing worth keeping" is a feeling for now. Sharpen it after 20 notes.

@@ -32,7 +32,7 @@ Format: **Q#:** Why …? (same ID as in [[Question log]]). Leave blank if nothin
 
 
 ## 🔗 Bonds
-<!-- Only if you can finish "connects because ___". Format: - [[other note]]: connects because ___ -->
+<!-- Only if you can finish "connects because ___". Format: - [[other note]]: connects because ___ (found by: me | bond pass) -->
 
 
 ## 💭 Reflection: 

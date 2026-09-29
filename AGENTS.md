@@ -20,6 +20,7 @@ Your job: keep notes consistent, and **propose honest connections the user hasn'
 | `logs/Question log.md` | Questions only, with IDs (`Q1`, `Q2`…) and status `open` / `answered`. |
 | `logs/Connection log.md` | Which question connects to which study: `raised by` / `answered by` / `connects to`. |
 | `logs/Bond log.md` | One row per bond pass, so the next pass knows where to start. |
+| `logs/Decision log.md` | Decisions about how the system works, and what's still open on purpose. Check it before suggesting a change. |
 | `notes/` | One note per thing worth keeping. Filename: `{Subject} - {Descriptive Title}.md` |
 | `concepts/` | Kind-1 mechanism atoms. Create one only when **2+ notes** share it. |
 | `resources/templates/dendrite.md` | The one note template. |
@@ -63,6 +64,20 @@ Sections, in this order, always:
 - **Organize, don't add.** Don't exaggerate, overwork, or add information beyond what they studied. No extra explanations, background, examples or outside research in the note. If a section has nothing from the studied range, leave it empty.
 - **Save new guidelines here.** When the user gives a rule like this for how to work, add it to this file.
 
+### Two kinds of input
+
+**1. A question or idea, with no study attached.** Something the user wondered about in daily life, on a walk or in passing, e.g. *"why is grass always green?"*. This is a living log entry, not a note.
+- Goes in [[Question log]] only, in **their** words, status `open`.
+- No note and no [[Study log]] row: nothing was studied yet.
+- The purpose is the habit: don't stop at being curious. The open queue is what they come back to answer when they have time. When a later study answers one, add the [[Connection log]] row and flip the status to `answered`.
+
+**2. Study material.** Notes, photos, files, media, any form. This becomes a note, following the range and "organize, don't add" rules above.
+
+### Draft first, always
+- **Nothing is written to the vault until the user confirms.** Both kinds of input come back as a draft **in chat** first. They check, fix and confirm; only then file it.
+- **One draft per topic.** Several topics in one day means several separate drafts. Never merge two topics into one note, even from the same session.
+- After drafting, say what's ready and stop. Don't file, don't log, don't set `bonded:`.
+
 ### The three logs (every time the user logs a study)
 1. **[[Study log]]:** always add a row (date, subject, what, range, note link or blank), even if no note gets written.
 2. **[[Question log]]:** add each question the user raised as a new row with the next ID. Use their question, not yours. Status `open` unless the studied range answered it.
@@ -87,7 +102,7 @@ Start from the index's **⏳ Waiting for a Bond Pass** table (`bonded` blank) pl
    - **Kind 1, analogy:** same mechanism in a different subject → shared `concepts:` atom.
    - **Kind 2, hidden shared variable:** unlike subjects wired to the same era, person, place or cause → shared context link or a `threads:` entry. **This is the kind the user values most. Prioritize it.**
    - **The dig:** a *why* question that opens into another field → expand 🧵 Where the Thread Led.
-3. **Write bonds** in 🔗 Bonds on *both* notes: `- [[other note]]: connects because {specific mechanism}`.
+3. **Write bonds** in 🔗 Bonds on *both* notes: `- [[other note]]: connects because {specific mechanism} (found by: bond pass)`. Bonds the user spots themselves get `(found by: me)`.
 4. **Quality bar.** Only bond if you can finish *"connects because ___"* with a specific mechanism, not a shared topic. **A note with no honest bond gets none.** A fake bond is worse than no bond, because it poisons a graph the user is learning to trust.
 5. **Check open questions.** Does any note in this pass answer or connect to an `open` question in [[Question log]]? Add a [[Connection log]] row.
 6. **Record the pass.** Set `bonded:` to today on every note checked, and add a row to [[Bond log]].
@@ -102,7 +117,7 @@ Summarize from the logs: which subjects were studied ([[Study log]]), which hubs
 - Don't create concept or hub pages for a single note.
 - Don't hand-edit Dataview output or turn `index.md` into a manual list.
 - Don't delete notes. If one turns out wrong, correct it and say what changed.
-- Don't turn this into a product or add scripts unless the user asks. README → Decisions says Obsidian first.
+- Don't turn this into a product or add scripts unless the user asks. [[Decision log]] says Obsidian first.
 
 ## 🔗 Relationship to other vaults
 

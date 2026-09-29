@@ -128,7 +128,7 @@ Dendrite has both halves. **Smart Connections** (installed) finds semantically s
 | Community detection | Natural clusters | My real subject groupings, and the gaps between them |
 | Betweenness centrality | "Broker" nodes | The era, person or thread that bridges the most subjects |
 
-Don't build any of this until the vault has enough notes to need it (see README → Decisions).
+Don't build any of this until the vault has enough notes to need it (see [[Decision log]]).
 
 ---
 
