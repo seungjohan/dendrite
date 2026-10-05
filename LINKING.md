@@ -76,7 +76,10 @@ place: "[[England]]"              # Kind 2: where
 threads: ["[[the infinitely small]]"]  # Kind 2: a theme that runs through it
 causes: ["[[the infinitely small]]"]   # Kind 2, direction: what made it happen
 enables: ["[[germ theory]]"]           # Kind 2, direction: what it made possible
+weakens: ["[[church monopoly on learning]]"]  # Kind 2, direction: what it undermined
 competes_for: ["[[free time]]"]        # Kind 2, the minus: what it fought others for
+chain: ["[[lens grinding]] -> [[the infinitely small]]"]  # steps the thread took; -| for "lowers"
+year: 1665                             # when its events happened: 1665, 44 BC, 1600s, 17th century, 1600-1650
 concepts: [ratios-create-harmony] # Kind 1: shared mechanism
 ```
 
@@ -84,6 +87,9 @@ concepts: [ratios-create-harmony] # Kind 1: shared mechanism
 - Pages for era, people, place and threads **don't need to exist**. Create one only when there's something to write.
 - Use consistent names. Always `[[1600s]]`, never `[[17th century]]` in one note and `[[1600s]]` in another. **Reuse before you mint:** check the index's *🏷 Names in Use* table before inventing a new one.
 - Leave a direction field empty when nothing honest fits. A guessed cause is a fake link.
+- **`year` is the date index.** `era` is the meeting point (a link); `year` is the sortable time
+  of what the note is about, so the vault can put notes in historical order and check that a
+  cause came before its effect. `date` stays the day I studied it.
 - Every note's *🕸 Meets this note* footer lists the other notes it meets **by kind**: *⬅ led
   here via* (they enabled one of its causes), *➡ led on via* (it enabled one of theirs), *🌱 same
   cause*, *⚔ both fought for*, and *also shares* for the rest. Leads for a bond, not bonds.
@@ -177,32 +183,47 @@ Don't build any of this until the vault has enough notes to need it (see [[Decis
 
 ## 6. How the vault proposes
 
-The rules above make every note a small map of what moved it and what it moved. Proposing is
-then a matter of finding where two maps touch, saying how, and putting the rare touches first.
+Dendrite runs the latest version of the linking algorithm itself: `scripts/flowlink.py`, the
+same rules Constellate links by (tested against Constellate's own output), with a time layer
+added for this vault. `scripts/bond_leads.py` reads every note as a **thinking flow** and asks it
+where two flows meet.
 
-**In Obsidian, always on:** the footer's typed columns, the node pages, and the index tables
-*🌱 One cause, many subjects* and *⚔ Fought over across subjects*.
+| Field | In the flow |
+|---|---|
+| `causes` | up: what moves this note's subject |
+| `enables` / `weakens` | down: what it raises / lowers |
+| `competes_for` | down, lowering a *budget*: two notes lowering one budget are rivals |
+| `chain` | steps between: `[[A]] -> [[B]]`, `[[A]] -| [[B]]` |
+| `people` | who it is about |
 
-**For a bond pass:** `python3 scripts/bond_leads.py` ranks every pair, and never writes a note:
+Two flows meet wherever they reach the same thing, up to three steps away, and the way they meet
+is the reason: one **feeds** or **works against** the other, they are **rivals**, they **pull
+against** each other, or they hold **opposite stakes**. Each meeting counts by its kind and by
+how **rare** the thing is; a thing on most notes is background. A step two notes agree on becomes
+one every note may walk.
 
-- **Weight.** Each meeting counts by its kind (led to and common cause 1.0, competition 0.9,
-  same mechanism and same thread 0.8, complement 0.7) and by how **rare** the node is: a node
-  on most notes says little. Era, people and place add weight (0.3–0.5) but never make a lead
-  alone; two of them together make a lead flagged *context only*.
-- **Distance.** A lead inside one subject counts half. Bridging subjects is the point (§5).
-- **Storylines.** Notes chained by *enables → causes* across subjects: the dig, followed through
-  the vault instead of inside one note.
-- **Secretly one story.** Nodes in 3+ subjects, the ones that deserve a node page.
-- **Same name, different spellings**, to merge (`[[17th century]]` ⇄ `[[1600s]]`); leads already
-  treat them as one.
-- **Open questions** a note may touch (shared words only).
-- **The test.** Bonds `found by: me` are the truth the fields are checked against: how many of
-  them the fields can see, and the kinds of all bonds, by who found them. A bond the fields miss
-  is a field to fill, not a fault in the bond.
+**Dates count more here than in Constellate**, which only reads them for trends:
 
-The idea came from Constellate (my media archive), where links are found where two resources'
-causes and effects meet; this section is how it fits study notes, which already answer the
-shadow question.
+- **A cause comes before its effect.** A "feeds" from a note whose events began after the other's
+  had ended is demoted to *hindsight*: weight, never a reason.
+- **One historical moment.** *Common cause* (both caused by X) and *complement* (both fed X) are
+  only weight in Constellate, where they were measured as shared topics. Here they are reasons
+  when the two notes sit within 50 years of each other (microscope and calculus, both moved by
+  the 1600s obsession with the infinitely small), and the pair counts ×1.25.
+- **Studied long ago.** A lead to a note studied 90+ days apart counts ×1.25: that is the
+  reminder Dendrite exists for. *Studied this week, back then* lists a month, three months and a
+  year ago.
+- **Timeline and storyline.** Notes in historical order, and the chain of notes, each a reason
+  to the next, moving forward in time, whose weakest link is strongest.
+
+Kind 1 (`concepts`) and `threads` are reasons too; era, people and place are weight only, two of
+them together a lead flagged *context only*. A lead inside one subject counts half (§5).
+
+Also in the report: bonds by kind and finder, names in 3+ subjects (node pages to make),
+spellings to merge, open questions a note may touch. It prints and never writes a note.
+
+Tests: `cd scripts && python3 -m unittest` (the core's parity with Constellate, and this vault's
+rules).
 
 ---
 

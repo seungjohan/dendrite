@@ -42,14 +42,15 @@ I thought I was just memorizing month names. Then the mistake in the counting tu
 #### 🕸 Meets this note
 <!-- Auto: how other notes meet this one, by kind (LINKING.md §1). Leads to check, not bonds. Ranked: python3 scripts/bond_leads.py -->
 ```dataview
-TABLE WITHOUT ID file.link AS Note, category AS Subject, ledHere AS "⬅ led here via", ledOn AS "➡ led on via", sameCause AS "🌱 same cause", fought AS "⚔ both fought for", shares AS "also shares"
+TABLE WITHOUT ID file.link AS Note, category AS Subject, ledHere AS "⬅ led here via", ledOn AS "➡ led on via", sameCause AS "🌱 same cause", fought AS "⚔ both fought for", against AS "⇅ pulls against", shares AS "also shares"
 FROM "notes"
 WHERE file.path != this.file.path
 FLATTEN list(filter(default(enables, list()), (x) => contains(default(this.causes, list()), x))) AS ledHere
 FLATTEN list(filter(default(causes, list()), (x) => contains(default(this.enables, list()), x))) AS ledOn
 FLATTEN list(filter(default(causes, list()), (x) => contains(default(this.causes, list()), x))) AS sameCause
 FLATTEN list(filter(default(competes_for, list()), (x) => contains(default(this.competes_for, list()), x))) AS fought
+FLATTEN list(filter(flat(list(default(enables, list()), default(weakens, list()))), (x) => contains(flat(list(default(this.enables, list()), default(this.weakens, list()))), x) AND (contains(default(enables, list()), x) != contains(default(this.enables, list()), x)))) AS against
 FLATTEN list(filter(flat(list(enables, threads, concepts, era, people, place)), (x) => x AND contains(flat(list(this.enables, this.threads, this.concepts, this.era, this.people, this.place)), x))) AS shares
-WHERE length(ledHere) + length(ledOn) + length(sameCause) + length(fought) + length(shares) > 0
-SORT length(ledHere) + length(ledOn) + length(sameCause) + length(fought) DESC, category
+WHERE length(ledHere) + length(ledOn) + length(sameCause) + length(fought) + length(against) + length(shares) > 0
+SORT length(ledHere) + length(ledOn) + length(sameCause) + length(fought) + length(against) DESC, category
 ```

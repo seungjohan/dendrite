@@ -23,10 +23,29 @@ category: system
 ## ❓ Questions
 ![[Question log#Log]]
 
+## 🕰 Timeline
+Every note in the order **its events happened** (`year`), not the order I studied them. The date index: a cause has to come before its effect, and notes from one historical moment meet more easily.
+```dataview
+TABLE WITHOUT ID year AS Year, file.link AS Note, category AS Subject, era AS Era
+FROM "notes"
+WHERE year
+SORT year ASC
+```
+
 ## 🗂 All Notes
 ```dataview
 TABLE category AS Subject, era AS Era, date AS Date
 FROM "notes"
+SORT date DESC
+```
+
+## 📅 Studied This Week, Back Then
+What I studied a month, three months and a year ago this week: the reminder Dendrite exists for.
+```dataview
+TABLE WITHOUT ID file.link AS Note, category AS Subject, date AS Studied
+FROM "notes"
+FLATTEN (date(today) - date).days AS ago
+WHERE date AND ((ago >= 27 AND ago <= 33) OR (ago >= 88 AND ago <= 94) OR (ago >= 362 AND ago <= 368))
 SORT date DESC
 ```
 

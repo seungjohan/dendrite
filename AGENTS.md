@@ -25,7 +25,7 @@ Your job: keep notes consistent, and **propose honest connections the user hasn'
 | `concepts/` | Kind-1 mechanism atoms. Create one only when **2+ notes** share it. |
 | `resources/templates/dendrite.md` | The one note template. |
 | `resources/templates/node.md` | A page for a third thing notes meet through (`[[free time]]`, `[[1600s]]`), listing notes by role. Only once 2+ notes name it. |
-| `scripts/bond_leads.py` | Ranked bond leads for a bond pass. Prints only; never writes a note. Tests: `python3 -m unittest discover scripts`. |
+| `scripts/bond_leads.py` | Ranked bond leads for a bond pass, from `scripts/flowlink.py` (the linking algorithm's core, copied from curiosity-lab's skill). Prints only; never writes a note. Tests: `cd scripts && python3 -m unittest`. |
 
 Era, people, place and thread pages (`[[1600s]]`, `[[Julius Caesar]]`) are **not pre-created**. Unresolved links are fine and still work as meeting points. Create the page only when there's real content to put in it, from `resources/templates/node.md`, which lists every note by its role toward the node.
 
@@ -40,13 +40,16 @@ category: french           # the subject, lowercase
 date: 2026-09-17
 source: French class       # book, course, video, conversation…
 range: "Unit 4, p.52–55"   # the range the user studied
+year: -44                  # when the content happened, sortable: 1665, -44, 1600s, 17th century (the date index)
 era: "[[Ancient Rome]]"    # link: when the content happened
 people: ["[[Julius Caesar]]"]
 place: "[[Rome]]"
 threads: []                # links: hidden shared variables beyond era/people/place (Kind 2)
-causes: []                 # links: what made this happen (LINKING.md §6)
+causes: []                 # links: what made this happen (LINKING.md §2)
 enables: []                # links: what this made possible
+weakens: []                # links: what it undermined
 competes_for: []           # links: what it fought others for (the minus)
+chain: []                  # steps: "[[A]] -> [[B]]" raises, "[[A]] -| [[B]]" lowers
 concepts: []               # Kind-1 mechanism atoms, e.g. [ratios-create-harmony]
 bonded: 2026-09-24         # set by the bond pass; blank until then
 ---
@@ -102,7 +105,7 @@ Sections, in this order, always:
 
 Start from the index's **⏳ Waiting for a Bond Pass** table (`bonded` blank) plus any note changed since the last date in [[Bond log]]. For each:
 
-1. **Fill context links.** Make sure `era`, `people` and `place` are set where they honestly apply, and `causes`, `enables`, `competes_for` where the note itself says so (LINKING.md §6). Empty is fine; a guessed cause is a fake link. **Reuse before you mint:** check the index's **🏷 Names in Use** table and reuse an existing name when it fits. Create a new name only when nothing does.
+1. **Fill context links.** Make sure `era`, `people` and `place` are set where they honestly apply, and `year`, `causes`, `enables`, `weakens`, `competes_for`, `chain` where the note itself says so (LINKING.md §2, §6). Empty is fine; a guessed cause is a fake link. `year` matters most: it is how the vault knows a cause came first. **Reuse before you mint:** check the index's **🏷 Names in Use** table and reuse an existing name when it fits. Create a new name only when nothing does.
 2. **Run `python3 scripts/bond_leads.py`**, then **search the whole vault** anyway: the script only sees the fields. Look for real relationships, in the three kinds from [LINKING.md](LINKING.md):
    - **Kind 1, analogy:** same mechanism in a different subject → shared `concepts:` atom.
    - **Kind 2, hidden shared variable:** unlike subjects wired to the same era, person, place or cause → shared context link or a `threads:` entry. **This is the kind the user values most. Prioritize it.**
