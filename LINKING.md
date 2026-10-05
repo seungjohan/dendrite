@@ -8,7 +8,7 @@ category: system
 > **How to use it:** Tag each note's context (`era`, `people`, `place`, `threads`) and mechanisms (`concepts`). Bonds need a reason. Kind 2 is the connection I want most.
 > **Carried over from:** `curiosity-lab`: `LINKING.md`, `wiki/research/system/connecting_the_dot.md`, `wiki/research/system/two-kinds-of-connection.md`
 
-# Linking System
+# Linking Algorithm
 
 ## The core question
 
@@ -129,6 +129,68 @@ Dendrite has both halves. **Smart Connections** (installed) finds semantically s
 | Betweenness centrality | "Broker" nodes | The era, person or thread that bridges the most subjects |
 
 Don't build any of this until the vault has enough notes to need it (see [[Decision log]]).
+
+---
+
+## 6. The algorithm, adapted to study notes (2026-10-05)
+
+Constellate, my media archive, worked on this same question with hundreds of saved pages and
+found what similarity can't do: Nike and Nintendo share no words, so only a *third thing* (free
+time) joins them. It gives every resource a **thinking flow** (what moves it, what it moves) and
+links two resources where their flows **meet**, naming *how* they meet. Full account:
+`LINKING-ALGORITHM.md` in the Constellate repo; the reusable version is curiosity-lab's
+`skills/linking-algorithm`.
+
+Dendrite already had half of a flow: the shadow question (§1). What it lacked was **direction**:
+`threads:` says two notes touch the same thing, not whether one *led to* the other or whether they
+*fought over* it. So three optional link fields carry the rest of the shadow question:
+
+```yaml
+causes: ["[[the infinitely small]]"]     # what made this happen          (flow: up)
+enables: ["[[germ theory]]"]             # what this made possible        (flow: down)
+competes_for: ["[[free time]]"]          # what it fought others for      (the minus)
+```
+
+They are links like the others, so they meet in the graph, the footer and the index for free.
+Leave them empty when nothing honest fits.
+
+### How two notes meet
+
+| Kind | When | Reads as | Makes a lead alone |
+|---|---|---|---|
+| **led to** | A `enables` X, B `causes` X | A enabled X, one cause of B | yes |
+| **common cause** | both `causes` X | X caused both | yes |
+| **competition** | both `competes_for` X | both fought for X | yes |
+| **same mechanism** | shared `concepts` atom (Kind 1) | both are cases of `atom` | yes |
+| **shared thread** | shared `threads` | both sit on the thread X | yes |
+| **complement** | both `enables` X | both fed X | yes |
+| same person / era / place | shared context | same person, X | no: two of them together, flagged *context only* |
+
+A lead's score adds its meetings, each weighted by **rarity**: a name on most notes says little,
+the way "AI" on every saved page said nothing in Constellate. A lead **inside one subject counts
+half**, because bridging distant subjects is where the value is (Burt, §5). Ties break by name,
+so the same vault always prints the same list.
+
+`python3 scripts/bond_leads.py` prints, and **never writes into a note**:
+- **Leads**, best first, each meeting spelled out. A lead is not a bond: the quality bar (§4) still
+  decides.
+- **Bonds you already have**: how many of your bonds the fields can see. Bonds `found by: me` are
+  the test of the algorithm (Constellate's golden pairs): a bond the fields miss is a field to fill.
+- **Storylines**: notes where each enabled a cause of the next, across subjects. The dig (§1)
+  followed through the vault instead of inside one note.
+- **Secretly one story**: names in 3+ subjects (the bond pass report, step 7).
+- **Same name, different spellings**: `[[17th century]]` and `[[1600s]]`, to merge by hand.
+  Leads already treat them as one.
+- **Open questions a note may touch**: shared words only, a hint to read.
+
+### What was left in Constellate, and why
+
+| Constellate does | Dendrite doesn't, because |
+|---|---|
+| An LLM writes every flow | Notes are my words ("organize, don't add"). The bond pass fills the three fields the way it fills `era`, and I correct them. |
+| Signed arrows on every variable | Study isn't a market. One minus, `competes_for`, covers the Nike/Nintendo shape. Add signs only if notes show they're needed. |
+| An LLM checks every "because" | The bond pass *is* that check: the quality bar, before any bond is written. |
+| Group summaries, whole-archive questions, bursts | Not until there are enough notes ([[Decision log]]). The monthly look-back does this by hand until then. |
 
 ---
 

@@ -8,6 +8,9 @@ era:
 people: []
 place: 
 threads: []
+causes: []
+enables: []
+competes_for: []
 concepts: []
 bonded: 
 ---
@@ -41,12 +44,12 @@ Format: **Q#:** Why …? (same ID as in [[Question log]]). Leave blank if nothin
 
 ---
 #### 🕸 Meets this note
-<!-- Auto: other notes sharing an era, person, place, thread or concept. Leads to check, not bonds. -->
+<!-- Auto: other notes sharing an era, person, place, thread, cause, effect, contested resource or concept. Leads to check, not bonds. Ranked leads: python3 scripts/bond_leads.py -->
 ```dataview
 TABLE WITHOUT ID file.link AS Note, category AS Subject, shared AS "Meets at"
 FROM "notes"
-FLATTEN flat(list(era, people, place, threads, concepts)) AS shared
+FLATTEN flat(list(era, people, place, threads, causes, enables, competes_for, concepts)) AS shared
 WHERE shared AND file.path != this.file.path
-  AND contains(flat(list(this.era, this.people, this.place, this.threads, this.concepts)), shared)
+  AND contains(flat(list(this.era, this.people, this.place, this.threads, this.causes, this.enables, this.competes_for, this.concepts)), shared)
 SORT category
 ```

@@ -14,7 +14,7 @@ Your job: keep notes consistent, and **propose honest connections the user hasn'
 |---|---|
 | `README.md` | Spark, inspirations, goal, system, decisions. The user's "don't forget why" page. |
 | `AGENTS.md` | This file. |
-| `LINKING.md` | The linking standard: Kind 1 / Kind 2 / the dig, and the quality bar. |
+| `LINKING.md` | The linking algorithm: Kind 1 / Kind 2 / the dig, the quality bar, and §6 how notes meet. |
 | `index.md` | Hub with Dataview tables. Don't hand-write note lists here. |
 | `logs/Study log.md` | One row per study session: what was studied, every day, note or not. |
 | `logs/Question log.md` | Questions only, with IDs (`Q1`, `Q2`…) and status `open` / `answered`. |
@@ -24,6 +24,7 @@ Your job: keep notes consistent, and **propose honest connections the user hasn'
 | `notes/` | One note per thing worth keeping. Filename: `{Subject} - {Descriptive Title}.md` |
 | `concepts/` | Kind-1 mechanism atoms. Create one only when **2+ notes** share it. |
 | `resources/templates/dendrite.md` | The one note template. |
+| `scripts/bond_leads.py` | Ranked bond leads for a bond pass. Prints only; never writes a note. Tests: `python3 -m unittest discover scripts`. |
 
 Era, people, place and thread pages (`[[1600s]]`, `[[Julius Caesar]]`) are **not pre-created**. Unresolved links are fine and still work as meeting points. Create the page only when there's real content to put in it.
 
@@ -42,6 +43,9 @@ era: "[[Ancient Rome]]"    # link: when the content happened
 people: ["[[Julius Caesar]]"]
 place: "[[Rome]]"
 threads: []                # links: hidden shared variables beyond era/people/place (Kind 2)
+causes: []                 # links: what made this happen (LINKING.md §6)
+enables: []                # links: what this made possible
+competes_for: []           # links: what it fought others for (the minus)
 concepts: []               # Kind-1 mechanism atoms, e.g. [ratios-create-harmony]
 bonded: 2026-09-24         # set by the bond pass; blank until then
 ---
@@ -97,8 +101,8 @@ Sections, in this order, always:
 
 Start from the index's **⏳ Waiting for a Bond Pass** table (`bonded` blank) plus any note changed since the last date in [[Bond log]]. For each:
 
-1. **Fill context links.** Make sure `era`, `people` and `place` are set where they honestly apply. **Reuse before you mint:** check the index's **🏷 Names in Use** table and reuse an existing name when it fits. Create a new name only when nothing does.
-2. **Search the whole vault** for real relationships, in the three kinds from [LINKING.md](LINKING.md):
+1. **Fill context links.** Make sure `era`, `people` and `place` are set where they honestly apply, and `causes`, `enables`, `competes_for` where the note itself says so (LINKING.md §6). Empty is fine; a guessed cause is a fake link. **Reuse before you mint:** check the index's **🏷 Names in Use** table and reuse an existing name when it fits. Create a new name only when nothing does.
+2. **Run `python3 scripts/bond_leads.py`**, then **search the whole vault** anyway: the script only sees the fields. Look for real relationships, in the three kinds from [LINKING.md](LINKING.md):
    - **Kind 1, analogy:** same mechanism in a different subject → shared `concepts:` atom.
    - **Kind 2, hidden shared variable:** unlike subjects wired to the same era, person, place or cause → shared context link or a `threads:` entry. **This is the kind the user values most. Prioritize it.**
    - **The dig:** a *why* question that opens into another field → expand 🧵 Where the Thread Led.
@@ -117,7 +121,7 @@ Summarize from the logs: which subjects were studied ([[Study log]]), which hubs
 - Don't create concept or hub pages for a single note.
 - Don't hand-edit Dataview output or turn `index.md` into a manual list.
 - Don't delete notes. If one turns out wrong, correct it and say what changed.
-- Don't turn this into a product or add scripts unless the user asks. [[Decision log]] says Obsidian first.
+- Don't turn this into a product or add scripts unless the user asks. [[Decision log]] says Obsidian first. (`bond_leads.py` was asked for, 2026-10-05.)
 
 ## 🔗 Relationship to other vaults
 

@@ -87,12 +87,12 @@ Every note has the same sections, whatever the subject:
 | 🧵 Where the Thread Led | Following the question out into history, people and other fields |
 | 🔗 Bonds | Links to other notes, each with "connects because ___" |
 | 💭 Reflection: {subtitle} | My own raw thinking, first person |
-| 🕸 Meets this note | Automatic: other notes sharing an era, person, place, thread or concept |
+| 🕸 Meets this note | Automatic: other notes sharing an era, person, place, thread, cause, effect, contested resource or concept |
 
 ### How notes connect
-The full linking system is in [[LINKING]]. In short:
+The full linking algorithm is in [[LINKING]]. In short:
 - **Kind 1, analogy:** two subjects share the same *mechanism* (e.g. ratios make harmony in both music and math). → `concepts:`
-- **Kind 2, hidden shared variable:** two unlike subjects are wired to the *same third thing*: an era, a person, a place, a cause (e.g. microscope + calculus ← the 1600s). → `era` / `people` / `place` / `threads`
+- **Kind 2, hidden shared variable:** two unlike subjects are wired to the *same third thing*: an era, a person, a place, a cause (e.g. microscope + calculus ← the 1600s). → `era` / `people` / `place` / `threads`, and with a direction: `causes` (what made it happen), `enables` (what it made possible), `competes_for` (what it fought others for)
 - **The dig:** a *why* question *inside* one subject that opens into history (e.g. why does September mean 7? → Caesar). → 🤔 The Question
 
 ### Folder layout
@@ -100,11 +100,12 @@ The full linking system is in [[LINKING]]. In short:
 dendrite/
 ├── README.md        ← this file: spark, goal, system (read when I forget why)
 ├── AGENTS.md        ← rules for Claude
-├── LINKING.md       ← the linking system
+├── LINKING.md       ← the linking algorithm
 ├── index.md         ← hub: all notes + where subjects meet
 ├── logs/            ← Study · Question · Connection · Bond · Decision logs
 ├── notes/           ← one note per thing worth keeping
 ├── concepts/        ← Kind-1 mechanisms (created only when 2+ notes share one)
+├── scripts/         ← bond_leads.py: ranked leads for a bond pass (proposes, never writes)
 └── resources/templates/dendrite.md
 ```
 Era, people, place and thread pages (`[[1600s]]`, `[[Julius Caesar]]`) don't need to exist up front. An unresolved link still works as a meeting point in the graph. Create the page only once there's something to say about it.

@@ -6,3 +6,4 @@
 .smtcmp_vector_db.tar.gz
 .smtcmp_json_db/
 .claude/
+__pycache__/

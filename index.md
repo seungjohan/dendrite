@@ -39,11 +39,11 @@ SORT length(rows) DESC
 ```
 
 ## 🧵 Where Subjects Meet (Kind 2)
-Era, people, place or thread shared by **2+ subjects**.
+Era, people, place, thread, cause, effect or contested resource shared by **2+ subjects**. Ranked, with the kind of meeting named: `python3 scripts/bond_leads.py`.
 ```dataview
 TABLE WITHOUT ID key AS "Meets at", unique(rows.category) AS Subjects, rows.file.link AS Notes
 FROM "notes"
-FLATTEN flat(list(era, people, place, threads)) AS node
+FLATTEN flat(list(era, people, place, threads, causes, enables, competes_for)) AS node
 WHERE node
 GROUP BY node
 WHERE length(unique(rows.category)) >= 2
@@ -70,11 +70,11 @@ SORT date ASC
 ```
 
 ## 🏷 Names in Use
-Check here before creating a new era, person, place, thread or concept. Reuse a match.
+Check here before creating a new era, person, place, thread, cause, effect or concept. Reuse a match.
 ```dataview
 TABLE WITHOUT ID key AS Name, length(rows) AS Notes, unique(rows.category) AS Subjects
 FROM "notes"
-FLATTEN flat(list(era, people, place, threads, concepts)) AS name
+FLATTEN flat(list(era, people, place, threads, causes, enables, competes_for, concepts)) AS name
 WHERE name
 GROUP BY name
 SORT length(rows) DESC
