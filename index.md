@@ -50,6 +50,30 @@ WHERE length(unique(rows.category)) >= 2
 SORT length(unique(rows.category)) DESC
 ```
 
+## 🌱 One Cause, Many Subjects
+The same cause behind notes from **2+ subjects**: candidates for a node page.
+```dataview
+TABLE WITHOUT ID key AS "Caused by", unique(rows.category) AS Subjects, rows.file.link AS Notes
+FROM "notes"
+FLATTEN causes AS node
+WHERE node
+GROUP BY node
+WHERE length(unique(rows.category)) >= 2
+SORT length(unique(rows.category)) DESC
+```
+
+## ⚔ Fought Over Across Subjects
+The minus: notes from **2+ subjects** competing for the same resource.
+```dataview
+TABLE WITHOUT ID key AS "Fought over", unique(rows.category) AS Subjects, rows.file.link AS Notes
+FROM "notes"
+FLATTEN competes_for AS node
+WHERE node
+GROUP BY node
+WHERE length(unique(rows.category)) >= 2
+SORT length(unique(rows.category)) DESC
+```
+
 ## 🧩 Shared Mechanisms (Kind 1)
 Concepts shared by **2+ subjects**.
 ```dataview

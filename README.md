@@ -108,4 +108,4 @@ dendrite/
 ├── scripts/         ← bond_leads.py: ranked leads for a bond pass (proposes, never writes)
 └── resources/templates/dendrite.md
 ```
-Era, people, place and thread pages (`[[1600s]]`, `[[Julius Caesar]]`) don't need to exist up front. An unresolved link still works as a meeting point in the graph. Create the page only once there's something to say about it.
+Era, people, place and thread pages (`[[1600s]]`, `[[Julius Caesar]]`) don't need to exist up front. An unresolved link still works as a meeting point in the graph. Create the page only once there's something to say about it; the `node` template lists every note by its role toward it (what it caused, what made it possible, who fought over it).

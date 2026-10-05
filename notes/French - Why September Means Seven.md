@@ -40,12 +40,16 @@ I thought I was just memorizing month names. Then the mistake in the counting tu
 
 ---
 #### 🕸 Meets this note
-<!-- Auto: other notes sharing an era, person, place, thread or concept. Leads to check, not bonds. -->
+<!-- Auto: how other notes meet this one, by kind (LINKING.md §1). Leads to check, not bonds. Ranked: python3 scripts/bond_leads.py -->
 ```dataview
-TABLE WITHOUT ID file.link AS Note, category AS Subject, shared AS "Meets at"
+TABLE WITHOUT ID file.link AS Note, category AS Subject, ledHere AS "⬅ led here via", ledOn AS "➡ led on via", sameCause AS "🌱 same cause", fought AS "⚔ both fought for", shares AS "also shares"
 FROM "notes"
-FLATTEN flat(list(era, people, place, threads, concepts)) AS shared
-WHERE shared AND file.path != this.file.path
-  AND contains(flat(list(this.era, this.people, this.place, this.threads, this.concepts)), shared)
-SORT category
+WHERE file.path != this.file.path
+FLATTEN list(filter(default(enables, list()), (x) => contains(default(this.causes, list()), x))) AS ledHere
+FLATTEN list(filter(default(causes, list()), (x) => contains(default(this.enables, list()), x))) AS ledOn
+FLATTEN list(filter(default(causes, list()), (x) => contains(default(this.causes, list()), x))) AS sameCause
+FLATTEN list(filter(default(competes_for, list()), (x) => contains(default(this.competes_for, list()), x))) AS fought
+FLATTEN list(filter(flat(list(enables, threads, concepts, era, people, place)), (x) => x AND contains(flat(list(this.enables, this.threads, this.concepts, this.era, this.people, this.place)), x))) AS shares
+WHERE length(ledHere) + length(ledOn) + length(sameCause) + length(fought) + length(shares) > 0
+SORT length(ledHere) + length(ledOn) + length(sameCause) + length(fought) DESC, category
 ```

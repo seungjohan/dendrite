@@ -68,6 +68,7 @@ class Note:
     fields: dict[str, list[str]]
     bonds: set[str]
     text: str
+    bond_kinds: list[tuple[str, str, str]] = field(default_factory=list)  # (other, kind, found by)
 
 
 @dataclass
@@ -125,19 +126,49 @@ def _section(text: str, heading: str) -> str:
     return m.group(1) if m else ""
 
 
+def typed_bonds(section: str) -> list[tuple[str, str, str]]:
+    """Bond lines as (other note, kind, found by). LINKING.md §4's format is
+    `- [[other]] · kind: connects because … (found by: me)`; a bond written
+    before kinds existed reads as "untyped"."""
+    out = []
+    for line in section.split("\n"):
+        m = re.match(r"^\s*-\s*\[\[([^\]|#]+)[^\]]*\]\]\s*(?:·\s*([^:]+))?:", line)
+        if m:
+            by = re.search(r"\(found by:\s*([^)]+)\)", line)
+            out.append((m.group(1).strip(), (m.group(2) or "untyped").strip().lower(),
+                        by.group(1).strip().lower() if by else "?"))
+    return out
+
+
 def load(vault: Path) -> list[Note]:
     notes = []
     for path in sorted((vault / "notes").glob("*.md")):
         text = path.read_text(encoding="utf-8")
         fm = frontmatter(text)
+        bonds = _section(text, "🔗 Bonds")
         notes.append(Note(
             name=path.stem,
             subject=fm.get("category", "").strip() or "?",
             fields={f: _links(fm.get(f, "")) for f in FIELDS},
-            bonds=set(re.findall(r"\[\[([^\]|#]+)", _section(text, "🔗 Bonds"))),
+            bonds=set(re.findall(r"\[\[([^\]|#]+)", bonds)),
             text=re.sub(r"\A---\n.*?\n---", "", text, count=1, flags=re.S),
+            bond_kinds=typed_bonds(bonds),
         ))
     return notes
+
+
+def bond_kinds(notes: list[Note]) -> dict[str, dict[str, int]]:
+    """{kind: {found by: count}}, each bond once though it is written on both notes."""
+    names = {n.name for n in notes}
+    seen: dict[frozenset, tuple[str, str]] = {}
+    for n in notes:
+        for other, kind, by in n.bond_kinds:
+            if other in names and other != n.name:
+                seen.setdefault(frozenset((n.name, other)), (kind, by))
+    out: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+    for kind, by in seen.values():
+        out[kind][by] += 1
+    return {k: dict(v) for k, v in sorted(out.items())}
 
 
 def idf(notes: list[Note]) -> dict[str, float]:
@@ -301,6 +332,11 @@ def report(vault: Path, top: int = 20) -> str:
     lines += ["", "## Bonds you already have",
               f"The fields see {len(known)} of your {len(bonded)} bonds; the rest were found some other way "
               "(a measure of what the fields miss, not a fault in the bond)." if bonded else "None yet.", ""]
+    kinds = bond_kinds(notes)
+    if kinds:
+        lines += ["By kind, and who found them:", ""]
+        lines += [f"- {k}: " + ", ".join(f"{by} {c}" for by, c in sorted(v.items())) for k, v in kinds.items()]
+        lines.append("")
     stories = storylines(notes)
     if stories:
         lines += ["## Storylines", "Each note enabled one cause of the next.", ""]

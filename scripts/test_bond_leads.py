@@ -15,10 +15,11 @@ def note(subject, body="", bonds="", **fields):
 VAULT = {
     "Physics - Lenses": note("physics", body="Lens grinding turned glass into a way to see tiny worlds.",
                              era='"[[1600s]]"', enables='["[[the infinitely small]]"]',
-                             bonds="- [[Math - Calculus]]: connects because both grew from lens-grinding (found by: me)"),
+                             bonds="- [[Math - Calculus]] · led to: connects because lens-grinding showed the infinitely small (found by: me)"),
     "Math - Calculus": note("math", era='"[[17th century]]"', causes='["[[The Infinitely Small]]"]',
                             enables='["[[mechanical worldview]]"]'),
-    "Biology - Cells": note("biology", causes='["[[the infinitely small]]"]', people='["[[Robert Hooke]]"]'),
+    "Biology - Cells": note("biology", causes='["[[the infinitely small]]"]', people='["[[Robert Hooke]]"]',
+                           bonds="- [[Latin - Caesar]]: connects because an old bond, before kinds (found by: bond pass)"),
     "History - Clockmakers": note("history", causes='["[[mechanical worldview]]"]'),
     "Games - Nintendo": note("games", competes_for='["[[free time]]"]'),
     "Sport - Running": note("sport", competes_for='["[[free time]]"]', concepts="[habit-loops]"),
@@ -103,6 +104,9 @@ class BondLeads(unittest.TestCase):
         hits = {(q, n): shared for q, _, n, shared in bl.open_questions(self.vault, self.notes)}
         self.assertEqual(hits[("Q2", "Physics - Lenses")], ["glass", "grinding"])
         self.assertFalse(any(q == "Q1" for q, _ in hits))  # answered questions are left alone
+
+    def test_bonds_are_counted_by_kind_and_finder(self):
+        self.assertEqual(bl.bond_kinds(self.notes), {"led to": {"me": 1}, "untyped": {"bond pass": 1}})
 
     def test_same_report_twice(self):
         self.assertEqual(bl.report(self.vault), bl.report(self.vault))

@@ -5,7 +5,7 @@ category: system
 
 > [!IMPORTANT] Key Takeaway
 > **Why this matters:** Connecting the dots (의외의 연결성) is the whole point of Dendrite. It isn't a personal knack. It's a well-studied field with named theories, and a system can do the remembering instead of luck.
-> **How to use it:** Tag each note's context (`era`, `people`, `place`, `threads`) and mechanisms (`concepts`). Bonds need a reason. Kind 2 is the connection I want most.
+> **How to use it:** Tag each note's context (`era`, `people`, `place`, `threads`), its direction (`causes`, `enables`, `competes_for`) and mechanisms (`concepts`). Bonds need a reason and a kind. Kind 2 is the connection I want most.
 > **Carried over from:** `curiosity-lab`: `LINKING.md`, `wiki/research/system/connecting_the_dot.md`, `wiki/research/system/two-kinds-of-connection.md`
 
 # Linking Algorithm
@@ -27,22 +27,43 @@ The mindset shift:
 |---|---|---|---|
 | The link is | same abstract *shape / mechanism* | wired to the same *third thing* | a *why* question *inside* one subject that opens into another field |
 | The two things are | alike underneath | often totally unlike | one subject, many layers |
-| You find it by | going **up**: abstract until they meet | going **sideways**: what each touches (era, person, place, cause) | going **down**: "why is it like this?" |
+| You find it by | going **up**: abstract until they meet | going **sideways**: what each touches, and which way (what caused it, what it made possible, what it fought for) | going **down**: "why is it like this?" |
 | Study example | music intervals ≈ number ratios | microscope + calculus ← the 1600s | *septembre* = 7 → Roman calendar → Caesar |
-| Field in the note | `concepts:` | `era` · `people` · `place` · `threads` | 🤔 The Question → 🧵 Where the Thread Led |
+| Field in the note | `concepts:` | direction: `causes` · `enables` · `competes_for`; context: `era` · `people` · `place` · `threads` | 🤔 The Question → 🧵 Where the Thread Led |
 
 ⭐ **Kind 2 is the connection I find most exciting, and similarity alone can never find it.** Unlike things aren't similar. Embeddings and "looks alike" put them far apart, so they only meet through the third thing they share. That's why every note records its context as links.
 
-### Kind 2 sub-types
-- **Common cause:** one thing sets off many effects. *The 1600s obsession with the infinitely small → microscope, calculus.* One upstream node, many subjects.
-- **Complement:** two things rise together. *Printing press ⇄ spread of literacy.*
-- **Substitute / competition:** two things fight over the same resource and move in opposite directions. *Nike ⇄ Nintendo, both compete for free time* (the original example from curiosity-lab).
+### Kind 2 sub-types, and the field each one lives in
+Each sub-type is a *direction* through the third thing, so each has its own field. Two notes that
+name the same thing in the same field meet as that sub-type, and the vault can say so.
+
+| Sub-type | Shape | Fields that meet | Example |
+|---|---|---|---|
+| **Common cause** | one thing sets off many effects | both `causes: X` | *the 1600s obsession with the infinitely small → microscope, calculus* |
+| **Led to** | one note made possible what caused the other | A `enables: X`, B `causes: X` | *lens grinding → the infinitely small → cell biology* |
+| **Complement** | two things fed the same outcome | both `enables: X` | *printing press, schooling → literacy* |
+| **Competition** (the minus) | two things fought over the same resource | both `competes_for: X` | *Nike ⇄ Nintendo, both fight for free time* |
+| Context | same when, who, where, or theme | `era` · `people` · `place` · `threads` | a lead, not yet a reason |
+
+The minus matters most: things that *compete* look nothing alike and never share words. It is
+the original curiosity-lab example, and the one similarity will never find.
 
 ### The "shadow" question (for finding Kind 2)
 Don't ask *"what is this similar to?"* Ask what surrounds it:
 > **When did it happen? Who made it? Where? What caused it? What did it enable? What did it replace or compete with?**
 
-Two notes whose answers land on the **same node** are bonded, even if they look nothing alike. Era, people and place are the answers every note gets. `threads:` holds the rest, e.g. `[[the infinitely small]]`, `[[power writes itself into time]]`, `[[printing press]]`.
+Each question has its field, so the answer is written down *with its direction*:
+
+| Question | Field |
+|---|---|
+| When? Who? Where? | `era` · `people` · `place` |
+| What caused it? | `causes` |
+| What did it enable? | `enables` |
+| What did it replace or compete with? | `competes_for` (name the *resource* fought over: `[[free time]]`, not `[[Nintendo]]`) |
+| What else runs through it? | `threads` |
+
+Two notes whose answers land on the **same node** meet, even if they look nothing alike; *which*
+fields they meet in says how.
 
 ---
 
@@ -52,14 +73,27 @@ Two notes whose answers land on the **same node** are bonded, even if they look 
 era: "[[1600s]]"                  # Kind 2: when
 people: ["[[Isaac Newton]]"]      # Kind 2: who
 place: "[[England]]"              # Kind 2: where
-threads: ["[[the infinitely small]]"]  # Kind 2: hidden cause / resource / theme
+threads: ["[[the infinitely small]]"]  # Kind 2: a theme that runs through it
+causes: ["[[the infinitely small]]"]   # Kind 2, direction: what made it happen
+enables: ["[[germ theory]]"]           # Kind 2, direction: what it made possible
+competes_for: ["[[free time]]"]        # Kind 2, the minus: what it fought others for
 concepts: [ratios-create-harmony] # Kind 1: shared mechanism
 ```
 
 - Context values are **links**, so notes meet in the graph and in the hub's "Where Subjects Meet" table automatically.
 - Pages for era, people, place and threads **don't need to exist**. Create one only when there's something to write.
 - Use consistent names. Always `[[1600s]]`, never `[[17th century]]` in one note and `[[1600s]]` in another. **Reuse before you mint:** check the index's *🏷 Names in Use* table before inventing a new one.
-- Every note's *🕸 Meets this note* footer lists other notes sharing any of these fields. Those are leads for a bond, not bonds.
+- Leave a direction field empty when nothing honest fits. A guessed cause is a fake link.
+- Every note's *🕸 Meets this note* footer lists the other notes it meets **by kind**: *⬅ led
+  here via* (they enabled one of its causes), *➡ led on via* (it enabled one of theirs), *🌱 same
+  cause*, *⚔ both fought for*, and *also shares* for the rest. Leads for a bond, not bonds.
+
+### Pages for the third thing
+When a node earns a page (`[[free time]]`, `[[1600s]]`), make it from the `node` template. It
+lists every note by its **role** toward that node: what it caused, what made it possible, who
+fought over it, what sits in it. The third thing is where unlike subjects meet, so its page is
+the bridge itself made visible (Burt, §5): one page shows that French, astronomy and politics
+were all moved by the same thing.
 
 ---
 
@@ -93,6 +127,15 @@ Only write a bond, or share a concept or thread, if you can finish:
 - "Both were made possible by lens-grinding advances in the 1600s" → that's a bond.
 
 **A note with no honest connection gets none.** A fake link is worse than an empty one, because it poisons the graph I'm learning to trust.
+
+### Every bond names its kind
+```
+- [[other note]] · common cause: connects because ___ (found by: me | bond pass)
+```
+Kinds: **led to** · **common cause** · **complement** · **competition** · **same mechanism** ·
+**same thread** · **the dig** · **other**. The kind makes the bond a typed edge, so the vault can
+count what kind of connection I actually find, and whether I find it or the bond pass does
+([[Decision log]]: "every bond records who found it").
 
 ---
 
@@ -132,65 +175,34 @@ Don't build any of this until the vault has enough notes to need it (see [[Decis
 
 ---
 
-## 6. The algorithm, adapted to study notes (2026-10-05)
+## 6. How the vault proposes
 
-Constellate, my media archive, worked on this same question with hundreds of saved pages and
-found what similarity can't do: Nike and Nintendo share no words, so only a *third thing* (free
-time) joins them. It gives every resource a **thinking flow** (what moves it, what it moves) and
-links two resources where their flows **meet**, naming *how* they meet. Full account:
-`LINKING-ALGORITHM.md` in the Constellate repo; the reusable version is curiosity-lab's
-`skills/linking-algorithm`.
+The rules above make every note a small map of what moved it and what it moved. Proposing is
+then a matter of finding where two maps touch, saying how, and putting the rare touches first.
 
-Dendrite already had half of a flow: the shadow question (§1). What it lacked was **direction**:
-`threads:` says two notes touch the same thing, not whether one *led to* the other or whether they
-*fought over* it. So three optional link fields carry the rest of the shadow question:
+**In Obsidian, always on:** the footer's typed columns, the node pages, and the index tables
+*🌱 One cause, many subjects* and *⚔ Fought over across subjects*.
 
-```yaml
-causes: ["[[the infinitely small]]"]     # what made this happen          (flow: up)
-enables: ["[[germ theory]]"]             # what this made possible        (flow: down)
-competes_for: ["[[free time]]"]          # what it fought others for      (the minus)
-```
+**For a bond pass:** `python3 scripts/bond_leads.py` ranks every pair, and never writes a note:
 
-They are links like the others, so they meet in the graph, the footer and the index for free.
-Leave them empty when nothing honest fits.
+- **Weight.** Each meeting counts by its kind (led to and common cause 1.0, competition 0.9,
+  same mechanism and same thread 0.8, complement 0.7) and by how **rare** the node is: a node
+  on most notes says little. Era, people and place add weight (0.3–0.5) but never make a lead
+  alone; two of them together make a lead flagged *context only*.
+- **Distance.** A lead inside one subject counts half. Bridging subjects is the point (§5).
+- **Storylines.** Notes chained by *enables → causes* across subjects: the dig, followed through
+  the vault instead of inside one note.
+- **Secretly one story.** Nodes in 3+ subjects, the ones that deserve a node page.
+- **Same name, different spellings**, to merge (`[[17th century]]` ⇄ `[[1600s]]`); leads already
+  treat them as one.
+- **Open questions** a note may touch (shared words only).
+- **The test.** Bonds `found by: me` are the truth the fields are checked against: how many of
+  them the fields can see, and the kinds of all bonds, by who found them. A bond the fields miss
+  is a field to fill, not a fault in the bond.
 
-### How two notes meet
-
-| Kind | When | Reads as | Makes a lead alone |
-|---|---|---|---|
-| **led to** | A `enables` X, B `causes` X | A enabled X, one cause of B | yes |
-| **common cause** | both `causes` X | X caused both | yes |
-| **competition** | both `competes_for` X | both fought for X | yes |
-| **same mechanism** | shared `concepts` atom (Kind 1) | both are cases of `atom` | yes |
-| **shared thread** | shared `threads` | both sit on the thread X | yes |
-| **complement** | both `enables` X | both fed X | yes |
-| same person / era / place | shared context | same person, X | no: two of them together, flagged *context only* |
-
-A lead's score adds its meetings, each weighted by **rarity**: a name on most notes says little,
-the way "AI" on every saved page said nothing in Constellate. A lead **inside one subject counts
-half**, because bridging distant subjects is where the value is (Burt, §5). Ties break by name,
-so the same vault always prints the same list.
-
-`python3 scripts/bond_leads.py` prints, and **never writes into a note**:
-- **Leads**, best first, each meeting spelled out. A lead is not a bond: the quality bar (§4) still
-  decides.
-- **Bonds you already have**: how many of your bonds the fields can see. Bonds `found by: me` are
-  the test of the algorithm (Constellate's golden pairs): a bond the fields miss is a field to fill.
-- **Storylines**: notes where each enabled a cause of the next, across subjects. The dig (§1)
-  followed through the vault instead of inside one note.
-- **Secretly one story**: names in 3+ subjects (the bond pass report, step 7).
-- **Same name, different spellings**: `[[17th century]]` and `[[1600s]]`, to merge by hand.
-  Leads already treat them as one.
-- **Open questions a note may touch**: shared words only, a hint to read.
-
-### What was left in Constellate, and why
-
-| Constellate does | Dendrite doesn't, because |
-|---|---|
-| An LLM writes every flow | Notes are my words ("organize, don't add"). The bond pass fills the three fields the way it fills `era`, and I correct them. |
-| Signed arrows on every variable | Study isn't a market. One minus, `competes_for`, covers the Nike/Nintendo shape. Add signs only if notes show they're needed. |
-| An LLM checks every "because" | The bond pass *is* that check: the quality bar, before any bond is written. |
-| Group summaries, whole-archive questions, bursts | Not until there are enough notes ([[Decision log]]). The monthly look-back does this by hand until then. |
+The idea came from Constellate (my media archive), where links are found where two resources'
+causes and effects meet; this section is how it fits study notes, which already answer the
+shadow question.
 
 ---
 

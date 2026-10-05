@@ -24,9 +24,10 @@ Your job: keep notes consistent, and **propose honest connections the user hasn'
 | `notes/` | One note per thing worth keeping. Filename: `{Subject} - {Descriptive Title}.md` |
 | `concepts/` | Kind-1 mechanism atoms. Create one only when **2+ notes** share it. |
 | `resources/templates/dendrite.md` | The one note template. |
+| `resources/templates/node.md` | A page for a third thing notes meet through (`[[free time]]`, `[[1600s]]`), listing notes by role. Only once 2+ notes name it. |
 | `scripts/bond_leads.py` | Ranked bond leads for a bond pass. Prints only; never writes a note. Tests: `python3 -m unittest discover scripts`. |
 
-Era, people, place and thread pages (`[[1600s]]`, `[[Julius Caesar]]`) are **not pre-created**. Unresolved links are fine and still work as meeting points. Create the page only when there's real content to put in it.
+Era, people, place and thread pages (`[[1600s]]`, `[[Julius Caesar]]`) are **not pre-created**. Unresolved links are fine and still work as meeting points. Create the page only when there's real content to put in it, from `resources/templates/node.md`, which lists every note by its role toward the node.
 
 ## 📝 Note format
 
@@ -106,11 +107,11 @@ Start from the index's **⏳ Waiting for a Bond Pass** table (`bonded` blank) pl
    - **Kind 1, analogy:** same mechanism in a different subject → shared `concepts:` atom.
    - **Kind 2, hidden shared variable:** unlike subjects wired to the same era, person, place or cause → shared context link or a `threads:` entry. **This is the kind the user values most. Prioritize it.**
    - **The dig:** a *why* question that opens into another field → expand 🧵 Where the Thread Led.
-3. **Write bonds** in 🔗 Bonds on *both* notes: `- [[other note]]: connects because {specific mechanism} (found by: bond pass)`. Bonds the user spots themselves get `(found by: me)`.
+3. **Write bonds** in 🔗 Bonds on *both* notes: `- [[other note]] · {kind}: connects because {specific mechanism} (found by: bond pass)`, kind one of led to · common cause · complement · competition · same mechanism · same thread · the dig · other (LINKING.md §4). Bonds the user spots themselves get `(found by: me)`.
 4. **Quality bar.** Only bond if you can finish *"connects because ___"* with a specific mechanism, not a shared topic. **A note with no honest bond gets none.** A fake bond is worse than no bond, because it poisons a graph the user is learning to trust.
 5. **Check open questions.** Does any note in this pass answer or connect to an `open` question in [[Question log]]? Add a [[Connection log]] row.
 6. **Record the pass.** Set `bonded:` to today on every note checked, and add a row to [[Bond log]].
-7. **Report back briefly:** new bonds, and any era, person, thread or concept that now pulls in **3+ subjects**. Those are the "secretly one story" moments. Suggest, don't restructure unasked.
+7. **Report back briefly:** new bonds, and any era, person, thread, cause, contested resource or concept that now pulls in **3+ subjects**. Those are the "secretly one story" moments; suggest a node page for each (`resources/templates/node.md`, LINKING.md §2). Suggest, don't restructure unasked.
 
 ## 🗓 Monthly look-back (when asked)
 
