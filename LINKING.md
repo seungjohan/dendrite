@@ -183,6 +183,8 @@ Don't build any of this until the vault has enough notes to need it (see [[Decis
 
 ## 6. How the vault proposes
 
+**The main idea does not move:** Dendrite is my study log; its point is bonding *different* subjects; notes are my words, organized, never added to; a bond is written only when it can say *connects because [a mechanism]*. The algorithm below only finds and ranks the places to look.
+
 Dendrite runs the latest version of the linking algorithm itself: `scripts/flowlink.py`, the
 same rules Constellate links by (tested against Constellate's own output), with a time layer
 added for this vault. `scripts/bond_leads.py` reads every note as a **thinking flow** and asks it
