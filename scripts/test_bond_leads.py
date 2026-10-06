@@ -34,6 +34,8 @@ VAULT = {
     "French - Months": note("french", era='"[[Ancient Rome]]"', place='"[[Rome]]"', people='["[[Julius Caesar]]"]'),
     "Latin - Caesar": note("latin", date="2025-10-05", era='"[[Ancient Rome]]"', place='"[[Rome]]"'),
     "Art - Mosaics": note("art", place='"[[Rome]]"'),
+    "Music - Intervals": note("music", body="## 📖 What I Studied\nOctave and fifth: simple ratio harmony between frequencies."),
+    "Math - Ratios": note("math", body="## 📖 What I Studied\nSimple ratio arithmetic and harmony of whole numbers, frequencies too."),
 }
 QUESTIONS = """| ID | Date | Subject | Question | Status |
 | -- | ---- | ------- | -------- | ------ |
@@ -124,6 +126,15 @@ class BondLeads(unittest.TestCase):
         hits = {(q, n): shared for q, _, n, shared in bl.open_questions(self.vault, self.notes)}
         self.assertEqual(hits[("Q2", "Physics - Lenses")], ["glass", "grinding"])
         self.assertFalse(any(q == "Q1" for q, _ in hits))
+
+    def test_what_was_studied_links_across_subjects(self):
+        l = self.pair("Music - Intervals", "Math - Ratios")
+        self.assertIn("same study", l.kinds)
+        self.assertTrue(l.reason)
+
+    def test_dates_nudge_rather_than_lead(self):
+        self.assertLess(bl.SAME_MOMENT, 1.25)
+        self.assertLess(bl.LONG_AGO, 1.25)
 
     def test_same_report_twice_and_nothing_written(self):
         before = {p: p.read_text() for p in (self.vault / "notes").glob("*.md")}

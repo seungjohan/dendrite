@@ -206,7 +206,10 @@ class Web:
     """Everything that depends on the whole collection, built once."""
 
     def __init__(self, flows: dict[str, dict], canon: dict | None = None, limited=(), broad=(), drops=(),
-                 when: dict[str, "When"] | None = None):
+                 when: dict[str, "When"] | None = None, hub_share: float = HUB_SHARE, hub_floor: int = HUB_FLOOR):
+        """`hub_share`/`hub_floor` are Constellate's defaults. A project whose
+        flows reach far by construction (a day reaches the week before it)
+        counts its hubs itself and passes them as `broad`, with hub_share=1."""
         canon = canon or {}
         self.flows = {i: canonical(f, canon) for i, f in flows.items()}
         self.shared = shared_edges(self.flows, canon)
@@ -219,7 +222,7 @@ class Web:
         for i, (down, up) in self.reaches.items():
             for v in set(down) | set(up):
                 self.index[v].add(i)
-        cap = max(HUB_SHARE * len(self.reaches), HUB_FLOOR)
+        cap = max(hub_share * len(self.reaches), hub_floor)
         self.hubs = frozenset(v for v, ids in self.index.items() if len(ids) > cap) | frozenset(broad)
 
     def meet(self, a: str, b: str) -> list[Meeting]:

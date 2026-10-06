@@ -62,10 +62,17 @@ OWN = {
 # flowlink's ally kinds that become reasons inside one historical moment
 SAME_MOMENT_KINDS = {"shared-exposure": "common cause", "co-drivers": "complement"}
 SAME_MOMENT_YEARS = 50
-SAME_MOMENT = 1.25      # two notes in one historical moment
+# Dendrite is about *what* I studied; dates help but come second (N314), so
+# they nudge rather than lift: Dayweb is the vault where time leads.
+SAME_MOMENT = 1.1       # two notes in one historical moment
 LONG_AGO_DAYS = 90
-LONG_AGO = 1.25         # a link to something studied long ago: the reminder Dendrite is for
+LONG_AGO = 1.1          # a link to something studied long ago: the reminder
 SAME_SUBJECT = 0.5      # bridging subjects is the point (Burt, LINKING.md §5)
+# What I studied, in my notes' own words (📖 What I Studied, the takeaway, the
+# question): Constellate's summary similarity, here across subjects only — two
+# notes of one subject sharing words is the subject itself.
+W_STUDY = 1.0
+STUDY_REASON = 0.25     # cosine at which shared study words carry a lead alone
 CONTEXT_PAIR = 2        # context-only leads need this many shared context names
 STORY_SUBJECTS = 3
 STOP = set("""about after again also because been before being between both could does doing during each
@@ -225,8 +232,42 @@ def _span(w: fl.When | None) -> str:
     return show(a) if a >= b else f"{show(a)}–{show(b)}"
 
 
-def meet(a: Note, b: Note, web: fl.Web) -> Lead:
+def study_vectors(notes: list[Note]) -> dict[str, dict[str, float]]:
+    """TF-IDF over what each note says was studied."""
+    import math
+    docs = {}
+    for n in notes:
+        parts = [_section(n.text, "📖 What I Studied"), _section(n.text, "🤔 The Question")]
+        take = re.search(r"\*\*In one line:\*\*(.*)", n.text)
+        docs[n.name] = [w for w in re.findall(r"[a-zà-ÿ]{4,}", " ".join(parts + [take.group(1) if take else ""]).lower())
+                        if w not in STOP]
+    df: dict[str, int] = defaultdict(int)
+    for ws in docs.values():
+        for w in set(ws):
+            df[w] += 1
+    N = len(docs) or 1
+    out = {}
+    for name, ws in docs.items():
+        tf: dict[str, int] = defaultdict(int)
+        for w in ws:
+            tf[w] += 1
+        v = {w: (1 + math.log(c)) * math.log((N + 1) / df[w]) for w, c in tf.items() if df[w] >= 2}
+        norm = math.sqrt(sum(x * x for x in v.values())) or 1.0
+        out[name] = {w: x / norm for w, x in v.items()}
+    return out
+
+
+def meet(a: Note, b: Note, web: fl.Web, study: dict | None = None) -> Lead:
     lead = Lead(a.name, b.name)
+    if study and a.subject != b.subject:
+        va, vb = study.get(a.name, {}), study.get(b.name, {})
+        cos = sum(x * vb.get(w, 0.0) for w, x in va.items())
+        if cos > 0:
+            shared = sorted((w for w in va if w in vb), key=lambda w: -va[w] * vb[w])[:4]
+            lead.score += W_STUDY * cos
+            lead.kinds.add("same study")
+            lead.reason |= cos >= STUDY_REASON
+            lead.because.append(f"same study: both studied {', '.join(shared)}")
     gap = fl.years_apart(a.when, b.when)
     same_moment = gap is not None and gap <= SAME_MOMENT_YEARS
     for m in web.meet(a.name, b.name):
@@ -269,10 +310,10 @@ def shown(lead: Lead) -> bool:
 
 def leads(notes: list[Note]) -> tuple[list[Lead], list[Lead]]:
     """(new leads, leads that are already bonds), best first, ties by name."""
-    web = web_of(notes)
+    web, study = web_of(notes), study_vectors(notes)
     new, known = [], []
     for a, b in combinations(notes, 2):
-        lead = meet(a, b, web)
+        lead = meet(a, b, web, study)
         if not lead.because or not shown(lead):
             continue
         (known if b.name in a.bonds or a.name in b.bonds else new).append(lead)
@@ -292,11 +333,11 @@ def storylines(notes: list[Note], steps: int = 5) -> list[tuple[list[str], float
     notes, each a lead with a reason to the next, whose weakest link is
     strongest (flowlink.storyline). Notes without a date sit this out."""
     dated = timeline(notes)
-    web = web_of(notes)
+    web, study = web_of(notes), study_vectors(notes)
     weight = {}
     for i, a in enumerate(dated):
         for b in dated[i + 1:]:
-            lead = meet(a, b, web)
+            lead = meet(a, b, web, study)
             if lead.reason:
                 weight[a.name, b.name] = lead.score
     chain, weak = fl.storyline([n.name for n in dated], weight, steps=steps)

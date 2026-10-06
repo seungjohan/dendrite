@@ -204,19 +204,19 @@ against** each other, or they hold **opposite stakes**. Each meeting counts by i
 how **rare** the thing is; a thing on most notes is background. A step two notes agree on becomes
 one every note may walk.
 
-**Dates count more here than in Constellate**, which only reads them for trends:
+**What I studied comes first; dates second.** Each log is a dot, and the dots are joined by what
+I studied in them:
 
-- **A cause comes before its effect.** A "feeds" from a note whose events began after the other's
-  had ended is demoted to *hindsight*: weight, never a reason.
-- **One historical moment.** *Common cause* (both caused by X) and *complement* (both fed X) are
-  only weight in Constellate, where they were measured as shared topics. Here they are reasons
-  when the two notes sit within 50 years of each other (microscope and calculus, both moved by
-  the 1600s obsession with the infinitely small), and the pair counts ×1.25.
-- **Studied long ago.** A lead to a note studied 90+ days apart counts ×1.25: that is the
-  reminder Dendrite exists for. *Studied this week, back then* lists a month, three months and a
-  year ago.
-- **Timeline and storyline.** Notes in historical order, and the chain of notes, each a reason
-  to the next, moving forward in time, whose weakest link is strongest.
+- **Same study.** The words of *📖 What I Studied*, the question and the takeaway, weighed by
+  rarity (Constellate's summary similarity), between notes of **different** subjects. Clear
+  overlap is a reason on its own; a little adds weight. Inside one subject it is the subject itself,
+  so it is not counted.
+- **Dates help, gently** (Dayweb is the vault where time leads):
+  - a cause comes before its effect, else *hindsight*: weight, never a reason;
+  - *common cause* and *complement* are reasons when two notes sit in one historical moment
+    (≤ 50 years), and that pair counts ×1.1;
+  - a note studied 90+ days apart counts ×1.1, a reminder;
+  - *Timeline*, *Storyline* in historical order, and *Studied this week, back then*.
 
 Kind 1 (`concepts`) and `threads` are reasons too; era, people and place are weight only, two of
 them together a lead flagged *context only*. A lead inside one subject counts half (§5).
