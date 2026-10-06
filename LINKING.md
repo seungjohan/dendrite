@@ -221,6 +221,8 @@ I studied in them:
 Kind 1 (`concepts`) and `threads` are reasons too; era, people and place are weight only, two of
 them together a lead flagged *context only*. A lead inside one subject counts half (§5).
 
+**In every page.** Dendrite has no app, so the links live in the notes: `bond_leads.py --write` puts each note's top five links (with their kind and reason) into its *🧭 Linked by the algorithm* block, above the footer, as wikilinks the graph and backlinks pick up. The template carries the empty block, so a new note has its place; filing a note ends with that command. They are leads, not bonds.
+
 Also in the report: bonds by kind and finder, names in 3+ subjects (node pages to make),
 spellings to merge, open questions a note may touch. It prints and never writes a note.
 

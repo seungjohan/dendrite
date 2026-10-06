@@ -38,6 +38,11 @@ French month names: *janvier, février, mars, avril, mai, juin, juillet, août, 
 ## 💭 Reflection: A Language Is a Time Capsule, Not Just Vocabulary
 I thought I was just memorizing month names. Then the mistake in the counting turned out to be the most interesting part. It led me straight to Julius Caesar. It's not just a language. It's connected to history, generations, the interests of an era. That's the moment that made me want every subject I study to connect like this.
 
+#### 🧭 Linked by the algorithm
+%% AUTO-LINKS %%
+- none yet
+%% /AUTO-LINKS %%
+
 ---
 #### 🕸 Meets this note
 <!-- Auto: how other notes meet this one, by kind (LINKING.md §1). Leads to check, not bonds. Ranked: python3 scripts/bond_leads.py -->

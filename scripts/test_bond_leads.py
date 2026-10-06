@@ -136,6 +136,19 @@ class BondLeads(unittest.TestCase):
         self.assertLess(bl.SAME_MOMENT, 1.25)
         self.assertLess(bl.LONG_AGO, 1.25)
 
+    def test_write_puts_links_into_each_page_and_only_there(self):
+        import shutil, tempfile
+        tmp = Path(tempfile.mkdtemp())
+        shutil.copytree(self.vault, tmp, dirs_exist_ok=True)
+        p = tmp / "notes" / "Games - Nintendo.md"
+        p.write_text(p.read_text() + "\n---\n#### 🕸 Meets this note\nfooter\n")
+        self.assertEqual(bl.write_links(tmp), len(VAULT))
+        text = p.read_text()
+        self.assertIn("#### 🧭 Linked by the algorithm\n%% AUTO-LINKS %%\n- [[Sport - Running]] — rivals", text)
+        self.assertLess(text.index("AUTO-LINKS"), text.index("🕸 Meets this note"))
+        self.assertEqual(bl.write_links(tmp), 0)  # a second run changes nothing
+        shutil.rmtree(tmp)
+
     def test_same_report_twice_and_nothing_written(self):
         before = {p: p.read_text() for p in (self.vault / "notes").glob("*.md")}
         self.assertEqual(bl.report(self.vault, today=date(2026, 10, 5)), bl.report(self.vault, today=date(2026, 10, 5)))

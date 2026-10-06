@@ -24,6 +24,7 @@ Your job: keep notes consistent, and **propose honest connections the user hasn'
 | `notes/` | One note per thing worth keeping. Filename: `{Subject} - {Descriptive Title}.md` |
 | `concepts/` | Kind-1 mechanism atoms. Create one only when **2+ notes** share it. |
 | `resources/templates/dendrite.md` | The one note template. |
+| `logs/Linking log.md` | How the linking algorithm got here and what changed when, for following up. |
 | `resources/templates/node.md` | A page for a third thing notes meet through (`[[free time]]`, `[[1600s]]`), listing notes by role. Only once 2+ notes name it. |
 | `scripts/bond_leads.py` | Ranked bond leads for a bond pass, from `scripts/flowlink.py` (the linking algorithm's core, copied from curiosity-lab's skill). Prints only; never writes a note. Tests: `cd scripts && python3 -m unittest`. |
 
@@ -114,6 +115,7 @@ Start from the index's **⏳ Waiting for a Bond Pass** table (`bonded` blank) pl
 4. **Quality bar.** Only bond if you can finish *"connects because ___"* with a specific mechanism, not a shared topic. **A note with no honest bond gets none.** A fake bond is worse than no bond, because it poisons a graph the user is learning to trust.
 5. **Check open questions.** Does any note in this pass answer or connect to an `open` question in [[Question log]]? Add a [[Connection log]] row.
 6. **Record the pass.** Set `bonded:` to today on every note checked, and add a row to [[Bond log]].
+6b. **Refresh the links in the pages:** `python3 scripts/bond_leads.py --write` rewrites every note's *🧭 Linked by the algorithm* block (between `%% AUTO-LINKS %%` markers). Do the same right after filing any new note, so it is linked the moment it exists. Never hand-edit inside the markers.
 7. **Report back briefly:** new bonds, and any era, person, thread, cause, contested resource or concept that now pulls in **3+ subjects**. Those are the "secretly one story" moments; suggest a node page for each (`resources/templates/node.md`, LINKING.md §2). Suggest, don't restructure unasked.
 
 ## 🗓 Monthly look-back (when asked)

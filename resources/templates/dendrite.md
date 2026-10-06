@@ -46,6 +46,11 @@ Kinds: led to · common cause · complement · competition · same mechanism · 
 <!-- Your own raw thinking. First person, any length. -->
 
 
+#### 🧭 Linked by the algorithm
+%% AUTO-LINKS %%
+- none yet
+%% /AUTO-LINKS %%
+
 ---
 #### 🕸 Meets this note
 <!-- Auto: how other notes meet this one, by kind (LINKING.md §1). Leads to check, not bonds. Ranked: python3 scripts/bond_leads.py -->

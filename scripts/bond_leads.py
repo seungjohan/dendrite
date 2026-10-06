@@ -30,10 +30,15 @@ agree on, rarity and hubs, exactly as Constellate does.
 Kind 1 (`concepts`) and `threads` are Dendrite's own and are reasons; era,
 people and place add weight only. A lead inside one subject counts half.
 
-It prints. It never writes into a note: a lead becomes a bond only when the
-bond pass can finish "connects because ___".
+Dendrite lives in Obsidian, so its links have to live in the pages (N315):
+--write puts each note's links into it as wikilinks. They are leads, not bonds;
+a lead becomes a bond only when the bond pass can finish "connects because ___".
 
     python3 scripts/bond_leads.py [--vault PATH] [--top 20] [--today YYYY-MM-DD]
+    python3 scripts/bond_leads.py --write    # each note's links into its page (AUTO-LINKS)
+
+--write is the one thing it writes: each note's top links, between
+%% AUTO-LINKS %% markers, regenerated whole. Bonds stay the bond pass's.
 """
 
 from __future__ import annotations
@@ -467,10 +472,56 @@ def report(vault: Path, top: int = 20, today: date | None = None) -> str:
     return "\n".join(lines)
 
 
+BLOCK = ("%% AUTO-LINKS %%", "%% /AUTO-LINKS %%")
+PER_NOTE = 5
+
+
+def links_block(name: str, leads_: list[Lead]) -> str:
+    """The algorithm's links for one note, as wikilinks Obsidian draws in the
+    graph and backlinks. Leads, not bonds: 🔗 Bonds stays the bond pass's."""
+    mine = [l for l in leads_ if name in (l.a, l.b)][:PER_NOTE]
+    rows = []
+    for l in mine:
+        other = l.b if l.a == name else l.a
+        kinds = " · ".join(sorted(l.kinds))
+        why = l.because[0].replace(name, "this") if l.because else ""
+        rows.append(f"- [[{other}]] — {kinds}{'' if l.reason else ' (context only)'}: {why}")
+    body = "\n".join(rows) if rows else "- none yet"
+    return f"{BLOCK[0]}\n{body}\n{BLOCK[1]}"
+
+
+def write_links(vault: Path) -> int:
+    """Put each note's links into its page, between AUTO-LINKS markers, above
+    the footer. Regenerated whole every run; never touches anything else."""
+    notes = load(vault)
+    new, known = leads(notes)
+    ranked = sorted(new + known, key=lambda l: (-l.score, l.a, l.b))
+    changed = 0
+    for path in sorted((vault / "notes").glob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        block = links_block(path.stem, ranked)
+        if BLOCK[0] in text:
+            out = re.sub(re.escape(BLOCK[0]) + r".*?" + re.escape(BLOCK[1]), lambda _: block, text, count=1, flags=re.S)
+        elif "#### 🕸 Meets this note" in text:
+            head, foot = text.split("#### 🕸 Meets this note", 1)
+            head = head.rstrip()
+            head = head[:-3].rstrip() if head.endswith("---") else head
+            out = f"{head}\n\n#### 🧭 Linked by the algorithm\n{block}\n\n---\n#### 🕸 Meets this note{foot}"
+        else:
+            out = text.rstrip() + f"\n\n#### 🧭 Linked by the algorithm\n{block}\n"
+        if out != text:
+            path.write_text(out, encoding="utf-8")
+            changed += 1
+    return changed
+
+
 def main(argv: list[str]) -> None:
     vault = Path(argv[argv.index("--vault") + 1]) if "--vault" in argv else Path(__file__).resolve().parent.parent
     top = int(argv[argv.index("--top") + 1]) if "--top" in argv else 20
     today = date.fromisoformat(argv[argv.index("--today") + 1]) if "--today" in argv else None
+    if "--write" in argv:
+        print(f"links written into {write_links(vault)} notes")
+        return
     print(report(vault, top, today))
 
 
